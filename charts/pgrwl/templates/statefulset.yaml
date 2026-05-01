@@ -1,26 +1,26 @@
-{{- if .Values.receive.enabled -}}
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "pgrwl.receiveFullname" . }}
+  name: {{ include "pgrwl.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "pgrwl.receiveLabels" . | nindent 4 }}
+    {{- include "pgrwl.labels" . | nindent 4 }}
 spec:
   replicas: 1
-  serviceName: {{ include "pgrwl.receiveFullname" . }}
+  serviceName: {{ include "pgrwl.fullname" . }}
   selector:
     matchLabels:
-      {{- include "pgrwl.receiveSelectorLabels" . | nindent 6 }}
+      {{- include "pgrwl.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.receive.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "pgrwl.receiveLabels" . | nindent 8 }}
-        {{- with .Values.receive.podLabels }}
+        {{- include "pgrwl.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -29,30 +29,30 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "pgrwl.serviceAccountName" . }}
-      {{- with .Values.receive.podSecurityContext }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.receive.nodeSelector }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.receive.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.receive.tolerations }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
         - name: storage
           persistentVolumeClaim:
-            claimName: {{ include "pgrwl.receiveFullname" . }}
+            claimName: {{ include "pgrwl.fullname" . }}
             readOnly: false
         - name: pgrwl-config
           configMap:
-            name: {{ include "pgrwl.receiveFullname" . }}
+            name: {{ include "pgrwl.fullname" . }}
       initContainers:
         - name: wait-db
           image: "busybox:1.37.0"
@@ -71,21 +71,21 @@ spec:
                 {{- if .Values.pgconn.existingSecret.enabled }}
                 name: {{ .Values.pgconn.existingSecret.name }}
                 {{- else }}
-                name: {{ include "pgrwl.receiveFullname" . }}
+                name: {{ include "pgrwl.fullname" . }}
                 {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- with .Values.receive.securityContext }}
+          {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.receive.args }}
-          args: {{- include "pgrwl.tplvalues.render" (dict "value" .Values.receive.args "context" $) | nindent 12 }}
+          {{- if .Values.args }}
+          args: {{- include "pgrwl.tplvalues.render" (dict "value" .Values.args "context" $) | nindent 12 }}
           {{- end }}
           env:
-          {{- range $key, $val := .Values.receive.env }}
+          {{- range $key, $val := .Values.env }}
             - name: {{ $key }}
               value: {{ $val | quote }}
           {{- end }}
@@ -94,21 +94,21 @@ spec:
                 {{- if .Values.pgconn.existingSecret.enabled }}
                 name: {{ .Values.pgconn.existingSecret.name }}
                 {{- else }}
-                name: {{ include "pgrwl.receiveFullname" . }}
+                name: {{ include "pgrwl.fullname" . }}
                 {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.receive.service.port }}
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- with .Values.receive.livenessProbe }}
+          {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.receive.readinessProbe }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.receive.resources }}
+          {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -117,4 +117,3 @@ spec:
               name: storage
             - mountPath: /etc/pgrwl
               name: pgrwl-config
-{{- end }}
