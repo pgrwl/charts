@@ -9,10 +9,6 @@ image:
   tag: ""
   pullPolicy: IfNotPresent
 
-######################################################################
-## GENERIC CONFIGURATION
-######################################################################
-
 pgconn:
   # If set, this secret will be used as the base PG env.
   # If empty, chart will create its own base secret from pgconn.values.
@@ -31,6 +27,12 @@ structuredConfig:
   main:
     listen_port: 7070
     directory: "/wals/wal-archive"
+  receiver:
+    slot: pgrwl_v5
+    no_loop: true
+    uploader:
+      sync_interval: 10s
+      max_concurrency: 4
   log:
     level: trace
     format: text
@@ -68,6 +70,7 @@ structuredConfig:
   #     pkey_pass: ""
   #     base_dir: "/mnt/wal-archive"
 
+# required section
 persistence:
   storageClassName: standard
   accessMode: ReadWriteOnce
@@ -80,13 +83,7 @@ args: ["daemon"]
 env:
   PGRWL_DAEMON_MODE: "receive"
   PGRWL_CONFIG_PATH: "/etc/pgrwl/config.yml"
-config: |
-  receiver:
-    slot: pgrwl_v5
-    no_loop: true
-    uploader:
-      sync_interval: 10s
-      max_concurrency: 4
+
 # optional section
 livenessProbe: {}
 readinessProbe: {}

@@ -8,4 +8,4 @@ metadata:
     {{- include "pgrwl.labels" . | nindent 4 }}
 data:
   config.yml: |
-    {{- tpl (mergeOverwrite (tpl .Values.config . | fromYaml) .Values.structuredConfig | toYaml) . | nindent 4 }}
+    {{- tpl (.Values.structuredConfig | toYaml) . | nindent 4 }}
