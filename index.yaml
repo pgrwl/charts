@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   pgrwl:
   - apiVersion: v2
+    appVersion: 1.0.34
+    created: "2026-05-01T05:39:37.20644516Z"
+    description: Cloud-native PostgreSQL WAL receiver
+    digest: 9f24a5d77e47cf63c334c363b8327b4160b848d9a433dc1e3a90d368e7877b6c
+    name: pgrwl
+    type: application
+    urls:
+    - pgrwl-0.0.14.tgz
+    version: 0.0.14
+  - apiVersion: v2
     appVersion: 1.0.32
     created: "2026-04-25T06:21:37.901106151Z"
     description: Cloud-native PostgreSQL WAL receiver
@@ -51,4 +61,4 @@ entries:
     urls:
     - pgrwl-0.0.8.tgz
     version: 0.0.8
-generated: "2026-04-25T06:21:37.901123497Z"
+generated: "2026-05-01T05:39:37.206469526Z"
