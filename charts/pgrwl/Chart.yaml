@@ -1,6 +1,6 @@
 apiVersion: v2
 name: pgrwl
-description: Cloud-native PostgreSQL WAL receiver
+description: Cloud-native continuous backup for PostgreSQL
 type: application
-version: 0.0.14
+version: 0.0.15
 appVersion: "1.0.34"
