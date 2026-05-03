@@ -1,0 +1,13 @@
+{{- if .Values.ui.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pgrwl.uiName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "pgrwl.uiLabels" . | nindent 4 }}
+data:
+  config.yml: |
+    {{- tpl (.Values.ui.config | toYaml) . | nindent 4 }}
+{{- end }}

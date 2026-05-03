@@ -100,3 +100,53 @@ serviceAccount:
   automount: true
   annotations: {}
   name: ""
+
+# Optional UI section
+
+ui:
+  enabled: false
+  replicaCount: 1
+  image:
+    registry: "quay.io"
+    repository: "pgrwl/ui"
+    tag: ""
+    pullPolicy: IfNotPresent
+  args: []
+  env:
+    PGRWL_UI_CONFIG_PATH: "/etc/pgrwl-ui/config.yml"
+  config:
+    listen_addr: ":8585"
+    receivers:
+      - label: default
+        addr: 'http://{{ include "pgrwl.fullname" . }}:{{ .Values.service.port }}'
+  service:
+    type: ClusterIP
+    port: 8585
+    nodePort: null
+    annotations: {}
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    tls: []
+    hosts:
+      - host: pgrwl-ui.local
+        paths:
+          - path: /
+            pathType: Prefix
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  resources: {}
+    # requests:
+    #   memory: "128Mi"
+    #   cpu: "32m"
+    # limits:
+    #   memory: "512Mi"
+    #   cpu: "1"

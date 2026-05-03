@@ -77,3 +77,31 @@ Usage:
         {{- tpl (.value | toYaml) .context }}
     {{- end }}
 {{- end -}}
+
+{{/*
+UI name. Keep it separate from the receiver StatefulSet name.
+*/}}
+{{- define "pgrwl.uiName" -}}
+{{- printf "%s-ui" (include "pgrwl.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Selector labels for the optional UI Deployment.
+*/}}
+{{- define "pgrwl.uiSelectorLabels" -}}
+app.kubernetes.io/name: {{ include "pgrwl.name" . }}-ui
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: ui
+{{- end }}
+
+{{/*
+Common labels for the optional UI resources.
+*/}}
+{{- define "pgrwl.uiLabels" -}}
+helm.sh/chart: {{ include "pgrwl.chart" . }}
+{{ include "pgrwl.uiSelectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
