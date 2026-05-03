@@ -3,6 +3,16 @@ entries:
   pgrwl:
   - apiVersion: v2
     appVersion: 1.0.34
+    created: "2026-05-03T07:45:17.101231266Z"
+    description: Cloud-native continuous backup for PostgreSQL
+    digest: 440ec2e95b4d381ca28276e9d2a5165b8423ec90060a8c657446e53ba1f289d8
+    name: pgrwl
+    type: application
+    urls:
+    - pgrwl-0.0.15.tgz
+    version: 0.0.15
+  - apiVersion: v2
+    appVersion: 1.0.34
     created: "2026-05-01T05:39:37.20644516Z"
     description: Cloud-native PostgreSQL WAL receiver
     digest: 9f24a5d77e47cf63c334c363b8327b4160b848d9a433dc1e3a90d368e7877b6c
@@ -61,4 +71,4 @@ entries:
     urls:
     - pgrwl-0.0.8.tgz
     version: 0.0.8
-generated: "2026-05-01T05:39:37.206469526Z"
+generated: "2026-05-03T07:45:17.101259309Z"
